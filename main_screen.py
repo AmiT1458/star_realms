@@ -1,7 +1,9 @@
 import pygame
 from crads_data import StarRealmsCards
+from card import Card
 
 pygame.init()
+pygame.font.init()
 
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 900
@@ -20,7 +22,7 @@ card_rect = pygame.rect.Rect((100, 200), (card_width * card_scale, card_height *
 card_scout = StarRealmsCards.ALL_STAR_REALMS_CARDS[0]
 
 def display_card(card_movement):
-    card_surface = pygame.Surface((card_width  * card_scale, card_height * card_scale))
+    card_surface = pygame.Surface((card_width * card_scale, card_height * card_scale))
     card_surface.fill(WHITE)
 
     card_name_text = CARD_NAME_FONT.render(card_scout['name'], True, BLACK)
@@ -46,6 +48,9 @@ def drag_card(position,card_rect, is_mouse_pressed):
 run = True
 is_mouse_pressed = False
 card_movement = (0,0)
+
+Scout = Card(attributes=card_scout)
+
 while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -60,8 +65,13 @@ while run:
     mx, my = pygame.mouse.get_pos()
 
     screen.fill(BLACK)
-    card_rect = display_card(card_movement)
-    card_movement = drag_card((mx, my) ,card_rect, is_mouse_pressed)
+
+    #card_rect = display_card(card_movement)
+    #card_movement = drag_card((mx, my) ,card_rect, is_mouse_pressed)
+
+    Scout.display_card(screen)
+    Scout.drag_card((mx, my), is_mouse_pressed)
+
     #print(pygame.mouse.get_rel())
 
     pygame.display.update()
