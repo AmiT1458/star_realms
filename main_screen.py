@@ -12,11 +12,20 @@ pygame.display.set_caption("Star realms")
 card_height = 34
 card_width = 24
 card_scale = 5
+CARD_NAME_FONT = pygame.font.SysFont('Gameplay,',35)
+CARD_abilities_FONT = pygame.font.SysFont('Gameplay,',25)
 
 card_rect = pygame.rect.Rect((100, 200), (card_width * card_scale, card_height * card_scale))
+
+card_scout = StarRealmsCards.ALL_STAR_REALMS_CARDS[0]
+
 def display_card(card_movement):
     card_surface = pygame.Surface((card_width  * card_scale, card_height * card_scale))
     card_surface.fill(WHITE)
+
+    card_name_text = CARD_NAME_FONT.render(card_scout['name'], True, BLACK)
+    card_surface.blit(card_name_text, (card_surface.get_width() // 2 - 35 ,0))
+    card_surface.blit(CARD_abilities_FONT.render("Trade: " + str(card_scout['trade']), True, BLACK), (card_surface.get_width() // 2 - 23, 30))
 
     card_rect.x += card_movement[0]
     card_rect.y += card_movement[1]
