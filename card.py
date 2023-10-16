@@ -7,10 +7,11 @@ BLACK = (0, 0, 0)
 CARD_NAME_FONT = pygame.font.SysFont('Gameplay,', 35)
 CARD_abilities_FONT = pygame.font.SysFont('Gameplay,',25)
 
+
 class Card:
     def __init__(self,**attributes):
-        self.attributes = attributes
-        self.name = attributes['attributes']['name']
+        self.attributes = attributes['attributes']
+        self.name = self.attributes['name']
         self.card_width = 24
         self.card_height = 34
         self.card_scale = 5
@@ -21,7 +22,6 @@ class Card:
 
         self.change_x = 0
         self.change_y = 0
-
 
     def display_card(self,screen):
         self.rect.x += self.change_x
@@ -40,14 +40,14 @@ class Card:
                 self.change_x += mouse_change[0]
                 self.change_y += mouse_change[1]
 
-    def run(self,screen):
+    def run(self, screen, position, is_mouse_pressed):
         self.display_card(screen)
-        #self.drag_card()
+        self.drag_card(position, is_mouse_pressed)
 
     def print_all_attributes(self):
         print(self.attributes)
 
 
-#all_cards = StarRealmsCards.ALL_STAR_REALMS_CARDS
-#card_scout = Card(attributes=all_cards[0])
-#card_scout.print_all_attributes()
+all_cards = StarRealmsCards.ALL_STAR_REALMS_CARDS
+card_scout = Card(attributes=all_cards[0])
+card_scout.print_all_attributes()
