@@ -1,7 +1,7 @@
 import pygame
 from crads_data import StarRealmsCards
 from card import Card
-
+import random
 pygame.init()
 pygame.font.init()
 
@@ -18,16 +18,16 @@ card_scout = StarRealmsCards.ALL_STAR_REALMS_CARDS[0]
 
 run = True
 is_mouse_pressed = False
-card_movement = (0,0)
-scout_pos = (600,200)
-viper_pos = (250,500)
+card_movement = (0, 0)
+scout_pos = (600, 200)
+viper_pos = (250, 500)
 
 Scout = Card(scout_pos, attributes=card_scout) # example of a card (Scout)
 Viper = Card(viper_pos, attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[1])
-other_ship = Card((500,500),attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[7])
+other_ship = Card((500,500),attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[3])
 mouse_change = pygame.mouse.get_rel()
 
-other_ship.print_all_attributes()
+#other_ship.print_all_attributes()
 
 while run:
     for event in pygame.event.get():

@@ -1,3 +1,4 @@
+from crads_data import StarRealmsCards
 import pygame
 pygame.init()
 
@@ -10,6 +11,7 @@ CARD_abilities_FONT = pygame.font.SysFont('Gameplay,',25)
 class Card:
     def __init__(self,starting_pos, **attributes):
         self.attributes = attributes['attributes']
+        self.not_card_attributes = ['set', 'flavor', 'quantity', 'name']
         self.name = self.attributes['name']
         self.card_width = 35
         self.card_height = 34
@@ -18,15 +20,37 @@ class Card:
                                      (self.card_width * self.card_scale, self.card_height * self.card_scale))
         self.card_surface = pygame.Surface((self.card_width * self.card_scale, self.card_height * self.card_scale))
         self.card_name_text = CARD_NAME_FONT.render(self.name, True, BLACK)
-
+        self.prop_pos_dic = self.get_properties_pos()
         self.change_x = 0
         self.change_y = 0
 
     def __len__(self):
         return sum(map(len, self.name.split()))
 
-    def display_card(self,screen):
+    def get_properties_pos(self):
+        properties_dict = {}
+        property_index = 1
+        large_properties = ['ally-abilities', 'scrap-abilities', 'abilities']
+        for key, value in self.attributes.items():
+            if key not in self.not_card_attributes:
+                if key in large_properties:
+                    for key2, value2 in value.items():
+                        if key == 'ally-abilities':
+                            properties_dict.update({'Faction abilities: ': (5, 24 * property_index)})
+                            properties_dict.update({f"{key2}: {value2}": (5, 24 * (property_index + 1))})
+                        else:
+                            properties_dict.update({f"{key2}: {value2}": (5, 24 * property_index)})
+
+                else:
+                    properties_dict.update({f"{key}: {value}": (5, 24 * property_index)})
+
+                property_index += 1
+        return properties_dict
+
+    def display_card(self, screen):
         self.card_surface.blit(self.card_name_text, (self.card_surface.get_width() // 2 - 70, 2))
+        for context, pos in self.prop_pos_dic.items():
+            self.card_surface.blit(CARD_abilities_FONT.render(context, True, BLACK), pos)
         screen.blit(self.card_surface, (self.rect.x, self.rect.y))
         self.card_surface.fill(WHITE)
 
@@ -43,3 +67,7 @@ class Card:
 
     def print_all_attributes(self):
         print(self.attributes)
+
+
+scout_card = Card((100, 10),attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[3])
+#scout_card.print_all_attributes()

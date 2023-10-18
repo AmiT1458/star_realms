@@ -83,12 +83,12 @@ class StarRealmsCards:
             COST: 2,
             SET: STAR_REALMS,
             QUANTITY: 10,
-            ABILITIES: [{
+            ABILITIES: {
                 TRADE: 2
-            }],
-            SCRAP_ABILITIES: [{
+            },
+            SCRAP_ABILITIES: {
                 COMBAT: 2
-            }]
+            }
         },
         {
             NAME: 'Trade Bot',
