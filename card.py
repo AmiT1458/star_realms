@@ -41,11 +41,12 @@ class Card:
                             properties_dict.update({f"{key2}: {value2}": (5, 24 * (property_index))})
                         else:
                             if key2 == 'other-ability':
+                                property_index += 1
                                 properties_dict.update({value2: (5, 24 * property_index)})
-                                property_index += 1
                             elif key == 'scrap-abilities':
-                                properties_dict.update({f"scrap: {key2} {value2}": (5, 24 * property_index)})
                                 property_index += 1
+                                properties_dict.update({f"scrap: {key2} {value2}": (5, 24 * property_index)})
+
                             else:
                                 properties_dict.update({f"{key2}: {value2}": (5, 24 * property_index)})
                                 property_index += 1

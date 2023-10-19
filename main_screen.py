@@ -23,7 +23,7 @@ viper_pos = (250, 500)
 
 Scout = Card(scout_pos, attributes=StarRealmsCards('Scout', False).pick_card()) # example of a card (Scout)
 Viper = Card(viper_pos, attributes=StarRealmsCards('Viper', False).pick_card())
-other_ship = Card((500, 500), attributes=StarRealmsCards('Space Station', False).pick_card())
+other_ship = Card((500, 500), attributes=StarRealmsCards('Port of Call', True).pick_card())
 
 #print(StarRealmsCards.ALL_STAR_REALMS_CARDS[2] == StarRealmsCards('Explorer').pick_card())
 
