@@ -1,3 +1,4 @@
+from random import randint
 # Fields
 NAME = 'name'
 FLAVOR = 'flavor'
@@ -807,5 +808,14 @@ class StarRealmsCards:
         },
     ]
 
+    def __init__(self,name, random):
+        self.name = name
+        self.random = random
 
-
+    def pick_card(self):
+        if not self.random:
+            for card in self.ALL_STAR_REALMS_CARDS:
+                if card['name'] == self.name:
+                    return card
+        else:
+            return self.ALL_STAR_REALMS_CARDS[randint(0, len(self.ALL_STAR_REALMS_CARDS))]

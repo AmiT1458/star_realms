@@ -14,7 +14,6 @@ pygame.display.set_caption("Star realms")
 CARD_NAME_FONT = pygame.font.SysFont('Gameplay,',35)
 CARD_abilities_FONT = pygame.font.SysFont('Gameplay,',25)
 
-card_scout = StarRealmsCards.ALL_STAR_REALMS_CARDS[0]
 
 run = True
 is_mouse_pressed = False
@@ -22,9 +21,12 @@ card_movement = (0, 0)
 scout_pos = (600, 200)
 viper_pos = (250, 500)
 
-Scout = Card(scout_pos, attributes=card_scout) # example of a card (Scout)
-Viper = Card(viper_pos, attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[1])
-other_ship = Card((500,500),attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[3])
+Scout = Card(scout_pos, attributes=StarRealmsCards('Scout', False).pick_card()) # example of a card (Scout)
+Viper = Card(viper_pos, attributes=StarRealmsCards('Viper', False).pick_card())
+other_ship = Card((500, 500), attributes=StarRealmsCards('Space Station', False).pick_card())
+
+#print(StarRealmsCards.ALL_STAR_REALMS_CARDS[2] == StarRealmsCards('Explorer').pick_card())
+
 mouse_change = pygame.mouse.get_rel()
 
 #other_ship.print_all_attributes()

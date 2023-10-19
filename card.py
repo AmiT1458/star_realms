@@ -13,8 +13,8 @@ class Card:
         self.attributes = attributes['attributes']
         self.not_card_attributes = ['set', 'flavor', 'quantity', 'name']
         self.name = self.attributes['name']
-        self.card_width = 35
-        self.card_height = 34
+        self.card_width = 40
+        self.card_height = 45
         self.card_scale = 5
         self.rect = pygame.rect.Rect((starting_pos[0], starting_pos[1]),
                                      (self.card_width * self.card_scale, self.card_height * self.card_scale))
@@ -37,14 +37,23 @@ class Card:
                     for key2, value2 in value.items():
                         if key == 'ally-abilities':
                             properties_dict.update({'Faction abilities: ': (5, 24 * property_index)})
-                            properties_dict.update({f"{key2}: {value2}": (5, 24 * (property_index + 1))})
+                            property_index += 1
+                            properties_dict.update({f"{key2}: {value2}": (5, 24 * (property_index))})
                         else:
-                            properties_dict.update({f"{key2}: {value2}": (5, 24 * property_index)})
+                            if key2 == 'other-ability':
+                                properties_dict.update({value2: (5, 24 * property_index)})
+                                property_index += 1
+                            elif key == 'scrap-abilities':
+                                properties_dict.update({f"scrap: {key2} {value2}": (5, 24 * property_index)})
+                                property_index += 1
+                            else:
+                                properties_dict.update({f"{key2}: {value2}": (5, 24 * property_index)})
+                                property_index += 1
 
                 else:
                     properties_dict.update({f"{key}: {value}": (5, 24 * property_index)})
+                    property_index += 1
 
-                property_index += 1
         return properties_dict
 
     def display_card(self, screen):
