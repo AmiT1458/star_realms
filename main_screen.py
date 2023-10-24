@@ -22,9 +22,9 @@ viper_pos = (250, 500)
 
 Scout = Card(scout_pos, attributes=StarRealmsCards('Scout', False).pick_card()) # example of a card (Scout)
 Viper = Card(viper_pos, attributes=StarRealmsCards('Viper', False).pick_card())
-other_ship = Card((500, 500), attributes=StarRealmsCards('Missile Mech', True).pick_card())
+other_ship = Card((500, 500), attributes=StarRealmsCards('Blob Carrier', False).pick_card())
 
-cards_to_display = [Scout, Viper, other_ship]
+cards_to_display = [other_ship]
 
 mouse_change = pygame.mouse.get_rel()
 
@@ -36,6 +36,13 @@ while run:
             run = False
             exit()
             break
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                run = False
+                exit()
+                break
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             is_mouse_pressed = True
         if event.type == pygame.MOUSEBUTTONUP:

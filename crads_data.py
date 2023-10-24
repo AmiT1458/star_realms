@@ -670,7 +670,7 @@ class StarRealmsCards:
             },
             ALLY_ABILITIES: {
                 # TODO: Should putting things on top of your deck be standardized?
-                OTHER_ABILITY: 'You may put the next ship you acquire this turn on top of your deck.'
+                OTHER_ABILITY: 'put the next ship on top of the deck'
             }
         },
         {
@@ -818,5 +818,5 @@ class StarRealmsCards:
                 if card['name'] == self.name:
                     return card
         else:
-            return self.ALL_STAR_REALMS_CARDS[randint(0, len(self.ALL_STAR_REALMS_CARDS))]
+            return self.ALL_STAR_REALMS_CARDS[randint(0, len(self.ALL_STAR_REALMS_CARDS) - 1)]
 

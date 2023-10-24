@@ -13,7 +13,7 @@ class Card:
         self.attributes = attributes['attributes']
         self.not_card_attributes = ['set', 'flavor', 'quantity', 'name']
         self.name = self.attributes['name']
-        self.card_width = 43
+        self.card_width = 48
         self.card_height = 57
         self.card_scale = 5
         self.rect = pygame.rect.Rect((starting_pos[0], starting_pos[1]),
@@ -50,10 +50,8 @@ class Card:
                                         self.display_abilities = True
                                         continue
 
-                                    else:
-                                        properties_dict.update({key2: (5, 24 * property_index)})
-
                                     if key2 == 'other-ability':
+                                        print(True)
                                         properties_dict.update({value2: (5, 24 * property_index)})
                                     else:
                                         properties_dict.update({f"{key2}: {value2}": (5, 24 * property_index)})
@@ -75,7 +73,6 @@ class Card:
                         properties_dict.update({f"{key}: {value}": (5, 24 * property_index)})
                         property_index += 1
 
-
         return properties_dict
 
     def display_card(self, screen):
@@ -89,6 +86,7 @@ class Card:
         self.change_x, self.change_y = 0, 0
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             if is_mouse_pressed:
+
                 self.rect.x += mouse_change[0]
                 self.rect.y += mouse_change[1]
 
