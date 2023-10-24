@@ -819,3 +819,4 @@ class StarRealmsCards:
                     return card
         else:
             return self.ALL_STAR_REALMS_CARDS[randint(0, len(self.ALL_STAR_REALMS_CARDS))]
+

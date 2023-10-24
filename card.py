@@ -13,13 +13,14 @@ class Card:
         self.attributes = attributes['attributes']
         self.not_card_attributes = ['set', 'flavor', 'quantity', 'name']
         self.name = self.attributes['name']
-        self.card_width = 40
-        self.card_height = 45
+        self.card_width = 43
+        self.card_height = 57
         self.card_scale = 5
         self.rect = pygame.rect.Rect((starting_pos[0], starting_pos[1]),
                                      (self.card_width * self.card_scale, self.card_height * self.card_scale))
         self.card_surface = pygame.Surface((self.card_width * self.card_scale, self.card_height * self.card_scale))
         self.card_name_text = CARD_NAME_FONT.render(self.name, True, BLACK)
+        self.display_abilities = False
         self.prop_pos_dic = self.get_properties_pos()
         self.change_x = 0
         self.change_y = 0
@@ -31,29 +32,49 @@ class Card:
         properties_dict = {}
         property_index = 1
         large_properties = ['ally-abilities', 'scrap-abilities', 'abilities']
-        for key, value in self.attributes.items():
-            if key not in self.not_card_attributes:
-                if key in large_properties:
-                    for key2, value2 in value.items():
-                        if key == 'ally-abilities':
-                            properties_dict.update({'Faction abilities: ': (5, 24 * property_index)})
-                            property_index += 1
-                            properties_dict.update({f"{key2}: {value2}": (5, 24 * (property_index))})
-                        else:
-                            if key2 == 'other-ability':
-                                property_index += 1
-                                properties_dict.update({value2: (5, 24 * property_index)})
-                            elif key == 'scrap-abilities':
-                                property_index += 1
-                                properties_dict.update({f"scrap: {key2} {value2}": (5, 24 * property_index)})
 
+        if not self.display_abilities:
+            for key, value in self.attributes.items():
+                if key not in self.not_card_attributes:
+                    if key in large_properties:
+                        for key2, value2 in value.items():
+                            if key == 'ally-abilities':
+                                if not self.display_abilities:
+                                    property_index += 1
+                                    properties_dict.update({'Faction abilities: ': (5, 24 * property_index)})
+                                    property_index += 1
+                                    if len(self.attributes[key]) >= 2:
+                                        for fac_ability, fact_value in self.attributes[key].items():
+                                            properties_dict.update({fac_ability: (5, 24 * property_index)})
+                                            property_index += 1
+                                        self.display_abilities = True
+                                        continue
+
+                                    else:
+                                        properties_dict.update({key2: (5, 24 * property_index)})
+
+                                    if key2 == 'other-ability':
+                                        properties_dict.update({value2: (5, 24 * property_index)})
+                                    else:
+                                        properties_dict.update({f"{key2}: {value2}": (5, 24 * property_index)})
+
+                                    self.display_abilities = True
                             else:
-                                properties_dict.update({f"{key2}: {value2}": (5, 24 * property_index)})
-                                property_index += 1
+                                if key2 == 'other-ability':
+                                    property_index += 1
+                                    properties_dict.update({value2: (5, 24 * property_index)})
+                                elif key == 'scrap-abilities':
+                                    property_index += 1
+                                    properties_dict.update({f"scrap: {key2} {value2}": (5, 24 * property_index)})
 
-                else:
-                    properties_dict.update({f"{key}: {value}": (5, 24 * property_index)})
-                    property_index += 1
+                                else:
+                                    properties_dict.update({f"{key2}: {value2}": (5, 24 * property_index)})
+                                    property_index += 1
+
+                    else:
+                        properties_dict.update({f"{key}: {value}": (5, 24 * property_index)})
+                        property_index += 1
+
 
         return properties_dict
 

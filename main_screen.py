@@ -5,7 +5,7 @@ import random
 pygame.init()
 pygame.font.init()
 
-SCREEN_WIDTH = 1200
+SCREEN_WIDTH = 1700
 SCREEN_HEIGHT = 900
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -13,7 +13,6 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Star realms")
 CARD_NAME_FONT = pygame.font.SysFont('Gameplay,',35)
 CARD_abilities_FONT = pygame.font.SysFont('Gameplay,',25)
-
 
 run = True
 is_mouse_pressed = False
@@ -23,9 +22,9 @@ viper_pos = (250, 500)
 
 Scout = Card(scout_pos, attributes=StarRealmsCards('Scout', False).pick_card()) # example of a card (Scout)
 Viper = Card(viper_pos, attributes=StarRealmsCards('Viper', False).pick_card())
-other_ship = Card((500, 500), attributes=StarRealmsCards('Port of Call', True).pick_card())
+other_ship = Card((500, 500), attributes=StarRealmsCards('Missile Mech', True).pick_card())
 
-#print(StarRealmsCards.ALL_STAR_REALMS_CARDS[2] == StarRealmsCards('Explorer').pick_card())
+cards_to_display = [Scout, Viper, other_ship]
 
 mouse_change = pygame.mouse.get_rel()
 
@@ -46,8 +45,11 @@ while run:
     mouse_change = pygame.mouse.get_rel()
 
     screen.fill(BLACK)
-    Viper.run(screen, (mx, my), is_mouse_pressed, mouse_change)
-    Scout.run(screen, (mx, my), is_mouse_pressed, mouse_change)
-    other_ship.run(screen, (mx, my), is_mouse_pressed, mouse_change)
+    for card in cards_to_display:
+        card.run(screen, (mx, my), is_mouse_pressed, mouse_change)
+
+    #Viper.run(screen, (mx, my), is_mouse_pressed, mouse_change)
+    #Scout.run(screen, (mx, my), is_mouse_pressed, mouse_change)
+    #other_ship.run(screen, (mx, my), is_mouse_pressed, mouse_change)
 
     pygame.display.update()
