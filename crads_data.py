@@ -820,3 +820,5 @@ class StarRealmsCards:
         else:
             return self.ALL_STAR_REALMS_CARDS[randint(0, len(self.ALL_STAR_REALMS_CARDS) - 1)]
 
+    def change_card(self):
+        return self.ALL_STAR_REALMS_CARDS[randint(0, len(self.ALL_STAR_REALMS_CARDS) - 1)]

@@ -1,12 +1,12 @@
 import pygame
 from crads_data import StarRealmsCards
 from card import Card
-import random
+
 pygame.init()
 pygame.font.init()
 
-SCREEN_WIDTH = 1700
-SCREEN_HEIGHT = 900
+SCREEN_WIDTH = 1800
+SCREEN_HEIGHT = 800
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -22,13 +22,12 @@ viper_pos = (250, 500)
 
 Scout = Card(scout_pos, attributes=StarRealmsCards('Scout', False).pick_card()) # example of a card (Scout)
 Viper = Card(viper_pos, attributes=StarRealmsCards('Viper', False).pick_card())
-other_ship = Card((500, 500), attributes=StarRealmsCards('Blob Carrier', False).pick_card())
+other_ship = Card((500, 500), attributes=StarRealmsCards('Blob Carrier', True).pick_card())
 
-cards_to_display = [other_ship]
+cards_to_display = [other_ship, Viper]
 
+count_presses = 0
 mouse_change = pygame.mouse.get_rel()
-
-#other_ship.print_all_attributes()
 
 while run:
     for event in pygame.event.get():
@@ -43,20 +42,21 @@ while run:
                 exit()
                 break
 
+            if event.key == pygame.K_SPACE:
+                cards_to_display[0].change_card()
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             is_mouse_pressed = True
+            count_presses += 1
         if event.type == pygame.MOUSEBUTTONUP:
             is_mouse_pressed = False
+
 
     mx, my = pygame.mouse.get_pos()
     mouse_change = pygame.mouse.get_rel()
 
     screen.fill(BLACK)
     for card in cards_to_display:
-        card.run(screen, (mx, my), is_mouse_pressed, mouse_change)
-
-    #Viper.run(screen, (mx, my), is_mouse_pressed, mouse_change)
-    #Scout.run(screen, (mx, my), is_mouse_pressed, mouse_change)
-    #other_ship.run(screen, (mx, my), is_mouse_pressed, mouse_change)
+        card.run(screen, (mx, my), is_mouse_pressed, mouse_change, count_presses)
 
     pygame.display.update()
