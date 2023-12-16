@@ -2,6 +2,7 @@ import pygame
 from crads_data import StarRealmsCards
 from card import Card
 from random import choice
+from player import Player
 
 pygame.init()
 pygame.font.init()
@@ -18,15 +19,10 @@ CARD_abilities_FONT = pygame.font.SysFont('Gameplay,',25)
 run = True
 is_mouse_pressed = False
 
-scout_pos = (600, 200)
-viper_pos = (250, 500)
 
-Scout = Card(scout_pos, attributes=StarRealmsCards('Scout', False).pick_card()) # example of a card (Scout)
-Viper = Card(viper_pos, attributes=StarRealmsCards('Viper', False).pick_card())
-other_ship = Card((500, 500), attributes=StarRealmsCards('Blob Carrier', True).pick_card())
+#Scout = Card(scout_pos, attributes=StarRealmsCards('Scout', False).pick_card()) example of a card (Scout)
 
-cards_to_display = [other_ship, Viper]
-
+cards_to_display = []
 
 class Manage_Game:
     def __init__(self):
@@ -47,7 +43,7 @@ class Manage_Game:
         #print(self.deck_pile)
 
         for i in range(6):
-            cards_to_display.append(Card((i * 300, SCREEN_HEIGHT // 2 - 80), attributes=StarRealmsCards(choice(self.deck_pile), False).pick_card()))
+            cards_to_display.append(Card((i * 300, SCREEN_HEIGHT // 2 - 50), attributes=StarRealmsCards(choice(self.deck_pile), False).pick_card()))
 
     def run(self):
         self.display_trade()
@@ -60,6 +56,9 @@ enter_preview_cards = False
 deck = Manage_Game()
 deck.initialize_deck()
 deck.run()
+
+player_1 = Player()
+player_1.initialize()
 
 while run:
     for event in pygame.event.get():
