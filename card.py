@@ -91,18 +91,18 @@ class Card:
 
     def preview_card(self, is_mouse_pressed=False):
         if not self.enter_preview:
-            print("Entered preview")
+            #print("Entered preview")
             self.card_width *= 2
-            self.card_height *= 10
+            self.card_height = 75
             self.card_surface = None
             self.card_surface = pygame.Surface((self.card_width * self.card_scale, self.card_height * self.card_scale))
-            self.rect.x = 900 - self.rect.width
-            self.rect.y = 400 - self.card_height
+            #self.rect.x = 900 - self.rect.width
+            #self.rect.y = 400 - self.card_height
             self.enter_preview = True
             self.can_enter_global = False
 
         elif self.enter_preview:
-            print("closed preview")
+            #print("closed preview")
             self.enter_preview = False
             self.card_width = 48
             self.card_height = 10
