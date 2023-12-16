@@ -28,6 +28,7 @@ cards_to_display = [other_ship, Viper]
 
 count_presses = 0
 mouse_change = pygame.mouse.get_rel()
+enter_preview_cards = False
 
 while run:
     for event in pygame.event.get():
@@ -47,16 +48,20 @@ while run:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             is_mouse_pressed = True
-            count_presses += 1
+
         if event.type == pygame.MOUSEBUTTONUP:
             is_mouse_pressed = False
-
 
     mx, my = pygame.mouse.get_pos()
     mouse_change = pygame.mouse.get_rel()
 
     screen.fill(BLACK)
     for card in cards_to_display:
-        card.run(screen, (mx, my), is_mouse_pressed, mouse_change, count_presses)
+        card.run(screen, (mx, my), is_mouse_pressed, enter_preview_cards)
+        if card.enter_preview:
+            enter_preview_cards = True
+
+        elif card.can_enter_global:
+            enter_preview_cards = False
 
     pygame.display.update()

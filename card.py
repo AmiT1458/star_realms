@@ -29,6 +29,10 @@ class Card:
         self.change_x = 0
         self.change_y = 0
 
+        self.starting_time = 0
+        self.preview_cooldown = 450
+        self.can_enter_global = False
+
     def __len__(self):
         return sum(map(len, self.name.split()))
 
@@ -85,35 +89,39 @@ class Card:
         screen.blit(self.card_surface, (self.rect.x, self.rect.y))
         self.card_surface.fill(WHITE)
 
-    def preview_card(self, count_presses, is_mouse_pressed=False):
+    def preview_card(self, is_mouse_pressed=False):
         if not self.enter_preview:
+            print("Entered preview")
             self.card_width *= 2
             self.card_height *= 10
+            self.card_surface = None
             self.card_surface = pygame.Surface((self.card_width * self.card_scale, self.card_height * self.card_scale))
             self.rect.x = 900 - self.rect.width
             self.rect.y = 400 - self.card_height
+            self.enter_preview = True
+            self.can_enter_global = False
 
-        if count_presses > 1:
+        elif self.enter_preview:
+            print("closed preview")
             self.enter_preview = False
             self.card_width = 48
             self.card_height = 10
+            self.card_surface = pygame.Surface((self.card_width * self.card_scale, self.card_height * self.card_scale))
             self.rect.x = self.starting_pos[0]
             self.rect.y = self.starting_pos[1]
+            self.can_enter_global = True
 
-    def drag_card(self, position, is_mouse_pressed, mouse_change, count_presses):
+    def drag_card(self, position, is_mouse_pressed, enter_preview_cards):
         self.change_x, self.change_y = 0, 0
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            if is_mouse_pressed:
-                self.preview_card(is_mouse_pressed, count_presses)
-                self.enter_preview = True
-                #print(self.count_presses)
-                #if self.rect.x - mouse_change[0] > 0 or mouse_change[0] > 0:
-                    #self.rect.x += mouse_change[0]
-                    #self.rect.y += mouse_change[1]
+            if is_mouse_pressed and pygame.time.get_ticks() - self.starting_time > self.preview_cooldown:
+                if not enter_preview_cards or self.enter_preview:
+                    self.starting_time = pygame.time.get_ticks()
+                    self.preview_card(is_mouse_pressed)
 
-    def run(self, screen, position, is_mouse_pressed, mouse_change, count_presses):
+    def run(self, screen, position, is_mouse_pressed, enter_preview_cards):
+        self.drag_card(position, is_mouse_pressed, enter_preview_cards)
         self.display_card(screen)
-        self.drag_card(position, is_mouse_pressed, mouse_change, count_presses)
 
     def print_all_attributes(self):
         print(self.attributes)
