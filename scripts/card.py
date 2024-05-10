@@ -1,13 +1,8 @@
-from crads_data import StarRealmsCards
+from cards_data import *
 import pygame
 #from main_screen import SCREEN_WIDTH
+from functools import lru_cache
 pygame.init()
-
-WHITE = (255, 255, 255)
-GREEN = (0,255,15)
-BLACK = (0, 0, 0)
-CARD_NAME_FONT = pygame.font.SysFont('Gameplay,', 32)
-CARD_abilities_FONT = pygame.font.SysFont('Gameplay,',25)
 
 
 class Card:
@@ -19,10 +14,14 @@ class Card:
         self.card_width = 48
         self.card_height = 10
         self.card_scale = 5
-        self.rect = pygame.rect.Rect((self.starting_pos[0], self.starting_pos[1]),
+        self.font = CARD_abilities_FONT
+        self.faction_color = self.faction_color_picker()
+
+        self.card_vector = pygame.Vector2((starting_pos[0], starting_pos[1]))
+        self.rect = pygame.rect.Rect((self.card_vector[0], self.card_vector[1]),
                                      (self.card_width * self.card_scale, self.card_height * self.card_scale))
         self.card_surface = pygame.Surface((self.card_width * self.card_scale, self.card_height * self.card_scale))
-        self.card_name_text = CARD_NAME_FONT.render(self.name, True, BLACK)
+        self.card_name_text = CARD_NAME_FONT.render(self.name, False, BLACK)
         self.display_abilities = False
         self.enter_preview = False
         self.prop_pos_dic = self.get_properties_pos()
@@ -31,7 +30,7 @@ class Card:
 
         self.starting_time = 0
         self.preview_cooldown = 450
-        self.can_enter_global = False
+        self.can_enter_global = True
 
     def __len__(self):
         return sum(map(len, self.name.split()))
@@ -82,18 +81,36 @@ class Card:
 
         return properties_dict
 
+    def faction_color_picker(self):
+        color = WHITE
+        faction = self.attributes['faction']
+
+        if faction == MACHINE_CULT:
+            color = RED
+
+        if faction == BLOB:
+            color = GREEN
+
+        if faction == TRADE_FEDERATION:
+            color = BLUE
+
+        if faction == STAR_EMPIRE:
+            color = YELLOW
+
+        return color
+
     def display_card(self, screen):
-        self.card_surface.blit(self.card_name_text, (self.card_surface.get_width() // 2 - 70, 2))
+        self.card_surface.blit(self.card_name_text, (5, 2))
         for context, pos in self.prop_pos_dic.items():
-            self.card_surface.blit(CARD_abilities_FONT.render(context, True, BLACK), pos)
-        screen.blit(self.card_surface, (self.rect.x, self.rect.y))
-        self.card_surface.fill(WHITE)
+            self.card_surface.blit(self.font.render(context, False, BLACK), pos)
+        screen.blit(self.card_surface, (self.card_vector[0], self.card_vector[1]))
+        self.card_surface.fill(self.faction_color)
 
     def preview_card(self, is_mouse_pressed=False):
-        if not self.enter_preview:
+        if not self.enter_preview and self.can_enter_global:
             #print("Entered preview")
             self.card_width *= 2
-            self.card_height = 75
+            self.card_height = 60
             self.card_surface = None
             self.card_surface = pygame.Surface((self.card_width * self.card_scale, self.card_height * self.card_scale))
             #self.rect.x = 900 - self.rect.width
@@ -129,5 +146,6 @@ class Card:
     def change_card(self):
         self.__init__(starting_pos=(self.rect.x, self.rect.y), attributes=StarRealmsCards('Scout', True).pick_card())
 
-scout_card = Card((100, 10),attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[3])
-#scout_card.print_all_attributes()
+
+# scout_card = Card((100, 10),attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[3])
+# scout_card.print_all_attributes()

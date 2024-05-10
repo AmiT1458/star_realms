@@ -1,4 +1,6 @@
+import pygame
 from random import randint
+
 # Fields
 NAME = 'name'
 FLAVOR = 'flavor'
@@ -58,6 +60,32 @@ GAMBIT_EXP = 'Gambit Expansion'
 PROMOTIONAL = 'Promotional Set'
 COLONY_WARS = 'Colony Wars'
 
+# game settings
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 800
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+RED = (191, 6, 40)
+BLUE = (70, 145, 250)
+YELLOW = (215, 180, 75)
+
+# fonts' sizes
+pygame.font.init()
+CARD_NAME_SIZE = 20
+CARD_ABILITIES_SIZE = 14
+UI_SIZE = 50
+
+# fonts
+GAME_FONT = '..\\fonts\\paladins.ttf'
+CARD_NAME_FONT = pygame.font.Font(GAME_FONT, CARD_NAME_SIZE)
+CARD_abilities_FONT = pygame.font.Font(GAME_FONT, CARD_ABILITIES_SIZE)
+UI_FONT = pygame.font.Font(GAME_FONT, UI_SIZE)
+
+cards_to_display = []
 
 class StarRealmsCards:
     ALL_STAR_REALMS_CARDS = [
@@ -818,7 +846,11 @@ class StarRealmsCards:
                 if card['name'] == self.name:
                     return card
         else:
-            return self.ALL_STAR_REALMS_CARDS[randint(0, len(self.ALL_STAR_REALMS_CARDS) - 1)]
+            randomized_card = self.ALL_STAR_REALMS_CARDS[randint(3, len(self.ALL_STAR_REALMS_CARDS) - 1)]
+            return randomized_card
+
+    def pick_card_name(self):
+        return self.ALL_STAR_REALMS_CARDS[randint(0, len(self.ALL_STAR_REALMS_CARDS) - 1)]['name']
 
     def change_card(self):
         return self.ALL_STAR_REALMS_CARDS[randint(0, len(self.ALL_STAR_REALMS_CARDS) - 1)]
