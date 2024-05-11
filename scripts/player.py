@@ -46,7 +46,8 @@ class Player:
         self.discard_pile = []
 
     # displaying the player's hand at the start of the turn
-    def display_hand(self):
+    def get_cards_obj(self):
+        self.in_play_obj = []
         i = 1
         for card in self.in_play:
             obj_card = Card((75 * i * 4 - 48, 575), attributes=StarRealmsCards(card, False).pick_card())
@@ -54,10 +55,16 @@ class Player:
             self.in_play_obj.append(obj_card)
             i += 1
 
+    def display_cards_obj(self, is_mouse_pressed, enter_preview_cards):
+        if self.playing:
+            for card in self.in_play_obj:
+                card.run((0, 0), is_mouse_pressed, enter_preview_cards)
+
+        if not self.playing:
+            pass
+
     def end_turn_hand(self): # ending the current turn and preparing to the next one
         self.discard_pile += self.in_play
-        self.draw_deck.append('Embassy Yacht')
-
         print(f"Total trade: {self.trade}")
         print(f"Total combat: {self.combat}")
         print(f"Current health: {self.health}")
@@ -65,8 +72,7 @@ class Player:
 
     def start_turn(self): # starts a new turn
         self.in_play = self.get_hand()
-        self.in_play_obj = []
-        self.display_hand()
+        self.get_cards_obj()
         self.combat = 0
         self.trade = 0
         self.playing = True

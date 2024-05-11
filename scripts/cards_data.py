@@ -76,7 +76,7 @@ YELLOW = (215, 180, 75)
 # fonts' sizes
 pygame.font.init()
 CARD_NAME_SIZE = 20
-CARD_ABILITIES_SIZE = 14
+CARD_ABILITIES_SIZE = 17
 UI_SIZE = 50
 
 # fonts

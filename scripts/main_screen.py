@@ -24,6 +24,7 @@ player_1.initialize_start()
 
 UI = UI()
 
+
 def unittest_cards():
     print("Starts a turn")
     player_1.start_turn()
@@ -32,8 +33,7 @@ def unittest_cards():
     print("Ending a turn")
     player_1.end_turn_hand()
 
-turn_num = 1
-play_animation = False
+
 current_time = pygame.time.get_ticks()
 while run:
     current_time = pygame.time.get_ticks()
@@ -51,6 +51,8 @@ while run:
 
             if event.key == pygame.K_SPACE:
                 cards_to_display[0].change_card()
+                # deck.remove_card(cards_to_display[1])
+                # print(cards_to_display[1].name)
 
             if event.key == pygame.K_r:
                 player_1.end_turn_start()
@@ -62,7 +64,8 @@ while run:
                 player_1.end_turn_hand()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            is_mouse_pressed = True
+            if pygame.mouse.get_pressed()[0]:
+                is_mouse_pressed = True
 
         if event.type == pygame.MOUSEBUTTONUP:
             is_mouse_pressed = False
@@ -72,7 +75,7 @@ while run:
 
     screen.fill(BLACK)
     for card in cards_to_display:
-        card.run(screen, (mx, my), is_mouse_pressed, enter_preview_cards)
+        card.run((mx, my), is_mouse_pressed, enter_preview_cards)
         if card.enter_preview:
             enter_preview_cards = True
 
@@ -80,4 +83,5 @@ while run:
             enter_preview_cards = False
 
     UI.run(player_1)
+    player_1.display_cards_obj(is_mouse_pressed, True)
     pygame.display.update()

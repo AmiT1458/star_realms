@@ -3,6 +3,7 @@ from star_realms.scripts.card import Card
 from random import choice
 from Button import Button
 
+
 class Manage_Game:
     def __init__(self):
         self.deck_pile_dic = None
@@ -20,6 +21,10 @@ class Manage_Game:
     def display_trade(self):
         for i in range(6):
             cards_to_display.append(Card((i * 300, SCREEN_HEIGHT // 2 - 175), attributes=StarRealmsCards(choice(self.deck_pile), False).pick_card()))
+
+    def remove_card(self, card):
+        cards_to_display.remove(card)
+        #cards_to_display.append(StarRealmsCards.pick_card())
 
     def run(self):
         self.display_trade()
@@ -53,9 +58,20 @@ class UI:
         self.button = Button(SCREEN_WIDTH - 300, SCREEN_HEIGHT - 50, "hello", 250)
 
     def draw_stats(self, player):
-        screen.blit(self.font.render(f"health: {player.health}", False, GREEN), (5, SCREEN_HEIGHT - 2 * self.font.get_height()))
-        screen.blit(self.font.render(f"combat: {player.combat}", False, RED), (5, SCREEN_HEIGHT - self.font.get_height()))
-        screen.blit(self.font.render(f"trade: {player.trade}", False, YELLOW), (5, SCREEN_HEIGHT - 3 * self.font.get_height()))
+        if player.playing:
+            screen.blit(self.font.render(f"trade: {player.trade}", False, YELLOW),
+                        (5, SCREEN_HEIGHT - 3 * self.font.get_height()))
+            screen.blit(self.font.render(f"combat: {player.combat}", False, RED),
+                        (5, SCREEN_HEIGHT - 2 * self.font.get_height()))
+            screen.blit(self.font.render(f"health: {player.health}", False, GREEN),
+                        (5, SCREEN_HEIGHT - self.font.get_height()))
+        else:
+            screen.blit(self.font.render(f"trade: {0}", False, YELLOW),
+                        (5, SCREEN_HEIGHT - 3 * self.font.get_height()))
+            screen.blit(self.font.render(f"combat: {0}", False, RED),
+                        (5, SCREEN_HEIGHT - 2 * self.font.get_height()))
+            screen.blit(self.font.render(f"health: {player.health}", False, GREEN),
+                        (5, SCREEN_HEIGHT - self.font.get_height()))
 
     def end_start_button(self, player):
         if player.playing:

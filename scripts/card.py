@@ -1,12 +1,11 @@
 from cards_data import *
 import pygame
 #from main_screen import SCREEN_WIDTH
-from functools import lru_cache
 pygame.init()
 
 
 class Card:
-    def __init__(self,starting_pos, **attributes):
+    def __init__(self, starting_pos, **attributes):
         self.starting_pos = starting_pos
         self.attributes = attributes['attributes']
         self.not_card_attributes = ['set', 'flavor', 'quantity', 'name']
@@ -99,7 +98,7 @@ class Card:
 
         return color
 
-    def display_card(self, screen):
+    def display_card(self):
         self.card_surface.blit(self.card_name_text, (5, 2))
         for context, pos in self.prop_pos_dic.items():
             self.card_surface.blit(self.font.render(context, False, BLACK), pos)
@@ -136,16 +135,15 @@ class Card:
                     self.starting_time = pygame.time.get_ticks()
                     self.preview_card(is_mouse_pressed)
 
-    def run(self, screen, position, is_mouse_pressed, enter_preview_cards):
+    def run(self, position, is_mouse_pressed, enter_preview_cards):
         self.drag_card(position, is_mouse_pressed, enter_preview_cards)
-        self.display_card(screen)
+        self.display_card()
 
     def print_all_attributes(self):
         print(self.attributes)
 
     def change_card(self):
         self.__init__(starting_pos=(self.rect.x, self.rect.y), attributes=StarRealmsCards('Scout', True).pick_card())
-
 
 # scout_card = Card((100, 10),attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[3])
 # scout_card.print_all_attributes()
