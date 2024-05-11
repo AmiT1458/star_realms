@@ -8,6 +8,7 @@ class Manage_Game:
     def __init__(self):
         self.deck_pile_dic = None
         self.deck_pile = None
+        self.in_play = []
 
     def initialize_trade_deck(self):
         self.deck_pile_dic = \
@@ -16,21 +17,27 @@ class Manage_Game:
         self.deck_pile_dic.pop(0)
 
         self.deck_pile = [card['name'] for card in self.deck_pile_dic for _ in range(card['quantity'])]
-        self.deck_pile.sort()
 
     def display_trade(self):
         for i in range(6):
-            cards_to_display.append(Card((i * 300, SCREEN_HEIGHT // 2 - 175), attributes=StarRealmsCards(choice(self.deck_pile), False).pick_card()))
+            card_name = choice(self.deck_pile)
+            cards_to_display.append(Card((i * 300, SCREEN_HEIGHT // 2 - 175), attributes=StarRealmsCards(card_name, False).pick_card()))
+            self.deck_pile.remove(card_name)
 
-    def remove_card(self, card):
-        cards_to_display.remove(card)
-        #cards_to_display.append(StarRealmsCards.pick_card())
+    def replace_card(self, card):
+        try:
+            self.deck_pile.remove(card.name)
+            print(len(self.deck_pile))
+        except Exception:
+            pass
+        card.change_card(choice(self.deck_pile))
 
     def run(self):
         self.display_trade()
 
 
 # class for changing the players' stats according to their turns
+# TODO: make this class the communication tool for the players
 class Round:
     def __init__(self):
         pass
@@ -53,35 +60,42 @@ class Round:
 
 
 class UI:
-    def __init__(self):
+    def __init__(self, player):
         self.font = UI_FONT
         self.button = Button(SCREEN_WIDTH - 300, SCREEN_HEIGHT - 50, "hello", 250)
+        self.player = player
 
-    def draw_stats(self, player):
-        if player.playing:
-            screen.blit(self.font.render(f"trade: {player.trade}", False, YELLOW),
+    def draw_stats(self):
+        if self.player.playing:
+            screen.blit(self.font.render(f"trade: {self.player.trade}", False, YELLOW),
                         (5, SCREEN_HEIGHT - 3 * self.font.get_height()))
-            screen.blit(self.font.render(f"combat: {player.combat}", False, RED),
+            screen.blit(self.font.render(f"combat: {self.player.combat}", False, RED),
                         (5, SCREEN_HEIGHT - 2 * self.font.get_height()))
-            screen.blit(self.font.render(f"health: {player.health}", False, GREEN),
+            screen.blit(self.font.render(f"health: {self.player.health}", False, GREEN),
                         (5, SCREEN_HEIGHT - self.font.get_height()))
         else:
             screen.blit(self.font.render(f"trade: {0}", False, YELLOW),
                         (5, SCREEN_HEIGHT - 3 * self.font.get_height()))
             screen.blit(self.font.render(f"combat: {0}", False, RED),
                         (5, SCREEN_HEIGHT - 2 * self.font.get_height()))
-            screen.blit(self.font.render(f"health: {player.health}", False, GREEN),
+            screen.blit(self.font.render(f"health: {self.player.health}", False, GREEN),
                         (5, SCREEN_HEIGHT - self.font.get_height()))
 
-    def end_start_button(self, player):
-        if player.playing:
+    def draw_buy_outline(self):
+        for card in cards_to_display:
+            if self.player.trade >= card.cost:
+                card.make_yellow()
+
+    def end_start_button(self):
+        if self.player.playing:
             self.button.change_text_input("End")
 
-        if not player.playing:
+        if not self.player.playing:
             self.button.change_text_input("Start")
 
         self.button.update()
 
-    def run(self, player):
-        self.end_start_button(player)
-        self.draw_stats(player)
+    def run(self):
+        self.end_start_button()
+        self.draw_stats()
+        self.draw_buy_outline()

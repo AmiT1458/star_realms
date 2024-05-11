@@ -14,12 +14,14 @@ class Card:
         self.card_height = 10
         self.card_scale = 5
         self.font = CARD_abilities_FONT
-        self.faction_color = self.faction_color_picker()
 
         self.card_vector = pygame.Vector2((starting_pos[0], starting_pos[1]))
         self.rect = pygame.rect.Rect((self.card_vector[0], self.card_vector[1]),
                                      (self.card_width * self.card_scale, self.card_height * self.card_scale))
         self.card_surface = pygame.Surface((self.card_width * self.card_scale, self.card_height * self.card_scale))
+        self.yellow_mask = pygame.mask.from_surface(self.card_surface)
+        self.lines = self.yellow_mask.outline()
+
         self.card_name_text = CARD_NAME_FONT.render(self.name, False, BLACK)
         self.display_abilities = False
         self.enter_preview = False
@@ -30,6 +32,11 @@ class Card:
         self.starting_time = 0
         self.preview_cooldown = 450
         self.can_enter_global = True
+
+        # game settings
+        self.cost = self.attributes['cost']
+        self.faction = self.attributes['faction']
+        self.faction_color = self.faction_color_picker()
 
     def __len__(self):
         return sum(map(len, self.name.split()))
@@ -82,18 +89,17 @@ class Card:
 
     def faction_color_picker(self):
         color = WHITE
-        faction = self.attributes['faction']
 
-        if faction == MACHINE_CULT:
+        if self.faction == MACHINE_CULT:
             color = RED
 
-        if faction == BLOB:
+        if self.faction == BLOB:
             color = GREEN
 
-        if faction == TRADE_FEDERATION:
+        if self.faction == TRADE_FEDERATION:
             color = BLUE
 
-        if faction == STAR_EMPIRE:
+        if self.faction == STAR_EMPIRE:
             color = YELLOW
 
         return color
@@ -104,6 +110,12 @@ class Card:
             self.card_surface.blit(self.font.render(context, False, BLACK), pos)
         screen.blit(self.card_surface, (self.card_vector[0], self.card_vector[1]))
         self.card_surface.fill(self.faction_color)
+
+    def make_yellow(self):
+        for point in self.lines:
+            x = point[0] + self.card_vector[0]
+            y = point[1] + self.card_vector[1]
+            pygame.draw.circle(screen, 'yellow', (x, y), 2.5)
 
     def preview_card(self, is_mouse_pressed=False):
         if not self.enter_preview and self.can_enter_global:
@@ -135,6 +147,14 @@ class Card:
                     self.starting_time = pygame.time.get_ticks()
                     self.preview_card(is_mouse_pressed)
 
+    def check_buy_button(self, is_mouse_pressed_right, position) -> bool:
+        if position[0] in range(self.rect.left, self.rect.right) and \
+                position[1] in range(self.rect.top, self.rect.bottom) and is_mouse_pressed_right:
+            return True
+
+        else:
+            return False
+
     def run(self, position, is_mouse_pressed, enter_preview_cards):
         self.drag_card(position, is_mouse_pressed, enter_preview_cards)
         self.display_card()
@@ -142,8 +162,9 @@ class Card:
     def print_all_attributes(self):
         print(self.attributes)
 
-    def change_card(self):
-        self.__init__(starting_pos=(self.rect.x, self.rect.y), attributes=StarRealmsCards('Scout', True).pick_card())
+    def change_card(self, name, random=False):
+        self.__init__(starting_pos=(self.rect.x, self.rect.y), attributes=StarRealmsCards(name, random).pick_card())
+
 
 # scout_card = Card((100, 10),attributes=StarRealmsCards.ALL_STAR_REALMS_CARDS[3])
 # scout_card.print_all_attributes()

@@ -4,10 +4,9 @@ from turn import *
 pygame.init()
 #pygame.font.init()
 
-pygame.display.set_caption("Star realms")
-
 run = True
 is_mouse_pressed = False
+is_mouse_pressed_right = False
 
 count_presses = 0
 mouse_change = pygame.mouse.get_rel()
@@ -22,7 +21,7 @@ player_1.initialize_start()
 #player_1.initialize_start()
 #player_1.display_hand()
 
-UI = UI()
+UI = UI(player_1)
 
 
 def unittest_cards():
@@ -50,8 +49,8 @@ while run:
                 break
 
             if event.key == pygame.K_SPACE:
-                cards_to_display[0].change_card()
-                # deck.remove_card(cards_to_display[1])
+                #cards_to_display[0].change_card()
+                deck.replace_card(cards_to_display[1])
                 # print(cards_to_display[1].name)
 
             if event.key == pygame.K_r:
@@ -67,6 +66,9 @@ while run:
             if pygame.mouse.get_pressed()[0]:
                 is_mouse_pressed = True
 
+            if pygame.mouse.get_pressed()[2]:
+                is_mouse_pressed_right = True
+
         if event.type == pygame.MOUSEBUTTONUP:
             is_mouse_pressed = False
 
@@ -74,6 +76,7 @@ while run:
     mouse_change = pygame.mouse.get_rel()
 
     screen.fill(BLACK)
+
     for card in cards_to_display:
         card.run((mx, my), is_mouse_pressed, enter_preview_cards)
         if card.enter_preview:
@@ -82,6 +85,6 @@ while run:
         elif card.can_enter_global:
             enter_preview_cards = False
 
-    UI.run(player_1)
+    UI.run()
     player_1.display_cards_obj(is_mouse_pressed, True)
     pygame.display.update()

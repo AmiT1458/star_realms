@@ -3,7 +3,6 @@ from random import shuffle
 from cards_data import *
 from turn import Round
 
-
 class Player:
     def __init__(self):
         self.health = 50
@@ -14,6 +13,7 @@ class Player:
         self.in_play = None
         self.in_play_obj = []
         self.playing = False
+        self.dict_info = {'health': self.health, 'trade': self.trade, 'combat': self.combat}
 
         self.starRealmsObj = StarRealmsCards
 
@@ -38,7 +38,7 @@ class Player:
             break
         return deck_5
 
-    def initialize_start(self): # being called at the start of every game
+    def initialize_start(self):  # being called at the start of every game
         Scouts = ['Scout']
         Vipers = ['Viper']
         self.draw_deck = Scouts * 8 + Vipers * 2
@@ -63,21 +63,36 @@ class Player:
         if not self.playing:
             pass
 
-    def end_turn_hand(self): # ending the current turn and preparing to the next one
+    def set_info(self):  # setting the info as a dict to be sent to the other client (player)
+        self.dict_info = {'health': self.health, 'trade': self.trade, 'combat': self.combat}
+
+    def send_info(self) -> dict:  # sending the info to the server
+        return self.dict_info
+
+    def read_player_info(self, info):  # reading the info from the sever and changing stats accordingly
+        self.get_damage(int(info['damage']))
+
+    def get_damage(self, damage):
+        self.health -= damage
+
+    def end_turn_hand(self):  # ending the current turn and preparing to the next one
         self.discard_pile += self.in_play
         print(f"Total trade: {self.trade}")
         print(f"Total combat: {self.combat}")
         print(f"Current health: {self.health}")
         self.playing = False
+        self.combat = 0
+        self.trade = 0
 
-    def start_turn(self): # starts a new turn
+    def start_turn(self):  # starts a new turn
         self.in_play = self.get_hand()
         self.get_cards_obj()
         self.combat = 0
         self.trade = 0
         self.playing = True
         Round().player_turn(self)
+        self.set_info()
 
-    def end_turn_start(self): # a method for unit test Player
+    def end_turn_start(self):  # a method for unit test Player
         self.start_turn()
         self.end_turn_hand()

@@ -64,6 +64,7 @@ COLONY_WARS = 'Colony Wars'
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 800
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Star realms")
 
 # colors
 WHITE = (255, 255, 255)
@@ -72,6 +73,7 @@ GREEN = (0, 255, 0)
 RED = (191, 6, 40)
 BLUE = (70, 145, 250)
 YELLOW = (215, 180, 75)
+YELLOW_BUY = ()
 
 # fonts' sizes
 pygame.font.init()
@@ -95,7 +97,8 @@ class StarRealmsCards:
             TYPE: SHIP,
             SET: STAR_REALMS,
             QUANTITY: 16,
-            TRADE: 1
+            TRADE: 1,
+            COST: 0
         },
         {
             NAME: 'Viper',
@@ -103,7 +106,8 @@ class StarRealmsCards:
             TYPE: SHIP,
             SET: STAR_REALMS,
             QUANTITY: 4,
-            COMBAT: 1
+            COMBAT: 1,
+            COST: 0
         },
         {
             NAME: 'Explorer',
@@ -836,7 +840,7 @@ class StarRealmsCards:
         },
     ]
 
-    def __init__(self,name, random):
+    def __init__(self, name, random):
         self.name = name
         self.random = random
 
