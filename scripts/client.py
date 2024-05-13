@@ -8,7 +8,7 @@ allowed_letters = "qwertyuiopasdfghjklzxcvbnm1234567890"
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 thread_alive = True
 is_connection = False
-
+message = ''
 
 def check_allow_name(name):
     name_allowed = False
@@ -42,6 +42,7 @@ def send_msg(msg):
 
 
 def receive_msg():
+    global message
     while True:
         data = client_socket.recv(1024)
         if not data:

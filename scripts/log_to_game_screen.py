@@ -49,6 +49,7 @@ def main():
 
         if name_text.pressed_enter:
             if client.send_name(name_text.text_input):
+                client.start_receive()
                 main_screen.main()
             name_text.pressed_enter = False
 

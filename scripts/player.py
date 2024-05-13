@@ -2,7 +2,7 @@ from card import Card
 from random import shuffle
 from cards_data import *
 from turn import Round
-from client import send_msg
+from client import send_msg, message
 
 class Player:
     def __init__(self):
@@ -71,7 +71,7 @@ class Player:
         send_msg(self.dict_info)
 
     def read_player_info(self, info):  # reading the info from the sever and changing stats accordingly
-        self.get_damage(int(info['damage']))
+        self.get_damage(info['damage'])
 
     def get_damage(self, damage):
         self.health -= damage
@@ -86,6 +86,7 @@ class Player:
         self.trade = 0
 
     def start_turn(self):  # starts a new turn
+        self.read_player_info(message)
         self.in_play = self.get_hand()
         self.get_cards_obj()
         self.combat = 0
