@@ -63,7 +63,7 @@ COLONY_WARS = 'Colony Wars'
 # game settings
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 800
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Star realms")
 
 # colors

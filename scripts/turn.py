@@ -21,7 +21,7 @@ class Manage_Game:
     def display_trade(self):
         for i in range(6):
             card_name = choice(self.deck_pile)
-            cards_to_display.append(Card((i * 300, SCREEN_HEIGHT // 2 - 175), attributes=StarRealmsCards(card_name, False).pick_card()))
+            cards_to_display.append(Card((i * 300, screen.get_height() // 2 - 175), attributes=StarRealmsCards(card_name, False).pick_card()))
             self.deck_pile.remove(card_name)
 
     def replace_card(self, card):
@@ -62,24 +62,24 @@ class Round:
 class UI:
     def __init__(self, player):
         self.font = UI_FONT
-        self.button = Button(SCREEN_WIDTH - 300, SCREEN_HEIGHT - 50, "hello", 250)
+        self.turn_button = Button(screen.get_width() - 300, screen.get_height() - 50, "hello", 250)
         self.player = player
 
     def draw_stats(self):
         if self.player.playing:
             screen.blit(self.font.render(f"trade: {self.player.trade}", False, YELLOW),
-                        (5, SCREEN_HEIGHT - 3 * self.font.get_height()))
+                        (5, screen.get_height() - 3 * self.font.get_height()))
             screen.blit(self.font.render(f"combat: {self.player.combat}", False, RED),
-                        (5, SCREEN_HEIGHT - 2 * self.font.get_height()))
+                        (5, screen.get_height() - 2 * self.font.get_height()))
             screen.blit(self.font.render(f"health: {self.player.health}", False, GREEN),
-                        (5, SCREEN_HEIGHT - self.font.get_height()))
+                        (5, screen.get_height() - self.font.get_height()))
         else:
             screen.blit(self.font.render(f"trade: {0}", False, YELLOW),
-                        (5, SCREEN_HEIGHT - 3 * self.font.get_height()))
+                        (5, screen.get_height() - 3 * self.font.get_height()))
             screen.blit(self.font.render(f"combat: {0}", False, RED),
-                        (5, SCREEN_HEIGHT - 2 * self.font.get_height()))
+                        (5, screen.get_height() - 2 * self.font.get_height()))
             screen.blit(self.font.render(f"health: {self.player.health}", False, GREEN),
-                        (5, SCREEN_HEIGHT - self.font.get_height()))
+                        (5, screen.get_height() - self.font.get_height()))
 
     def draw_buy_outline(self):
         for card in cards_to_display:
@@ -88,12 +88,12 @@ class UI:
 
     def end_start_button(self):
         if self.player.playing:
-            self.button.change_text_input("End")
+            self.turn_button.change_text_input("End")
 
         if not self.player.playing:
-            self.button.change_text_input("Start")
+            self.turn_button.change_text_input("Start")
 
-        self.button.update()
+        self.turn_button.update()
 
     def run(self):
         self.end_start_button()

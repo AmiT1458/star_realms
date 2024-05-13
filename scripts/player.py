@@ -2,6 +2,7 @@ from card import Card
 from random import shuffle
 from cards_data import *
 from turn import Round
+from client import send_msg
 
 class Player:
     def __init__(self):
@@ -66,8 +67,8 @@ class Player:
     def set_info(self):  # setting the info as a dict to be sent to the other client (player)
         self.dict_info = {'health': self.health, 'trade': self.trade, 'combat': self.combat}
 
-    def send_info(self) -> dict:  # sending the info to the server
-        return self.dict_info
+    def send_info(self):  # sending the info to the server
+        send_msg(self.dict_info)
 
     def read_player_info(self, info):  # reading the info from the sever and changing stats accordingly
         self.get_damage(int(info['damage']))
@@ -76,10 +77,10 @@ class Player:
         self.health -= damage
 
     def end_turn_hand(self):  # ending the current turn and preparing to the next one
+        self.set_info()
+        self.send_info()
         self.discard_pile += self.in_play
-        print(f"Total trade: {self.trade}")
-        print(f"Total combat: {self.combat}")
-        print(f"Current health: {self.health}")
+
         self.playing = False
         self.combat = 0
         self.trade = 0
@@ -91,7 +92,6 @@ class Player:
         self.trade = 0
         self.playing = True
         Round().player_turn(self)
-        self.set_info()
 
     def end_turn_start(self):  # a method for unit test Player
         self.start_turn()

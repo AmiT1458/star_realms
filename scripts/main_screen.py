@@ -1,90 +1,90 @@
+import pygame
+
 from player import Player
 from turn import *
-
-pygame.init()
-#pygame.font.init()
-
-run = True
-is_mouse_pressed = False
-is_mouse_pressed_right = False
-
-count_presses = 0
-mouse_change = pygame.mouse.get_rel()
-enter_preview_cards = False
-
-deck = Manage_Game()
-deck.initialize_trade_deck()
-deck.run()
-
-player_1 = Player()
-player_1.initialize_start()
 #player_1.initialize_start()
 #player_1.display_hand()
 
-UI = UI(player_1)
 
-
-def unittest_cards():
-    print("Starts a turn")
-    player_1.start_turn()
-    print(player_1.draw_deck)
-
-    print("Ending a turn")
-    player_1.end_turn_hand()
-
-
-current_time = pygame.time.get_ticks()
-while run:
+run = True
+def main():
+    from turn import UI
+    global run
     current_time = pygame.time.get_ticks()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-            exit()
-            break
+    run = True
+    is_mouse_pressed = False
+    is_mouse_pressed_right = False
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
+    count_presses = 0
+    mouse_change = pygame.mouse.get_rel()
+    enter_preview_cards = False
+
+    pygame.init()
+    # pygame.font.init()
+
+    deck = Manage_Game()
+    deck.initialize_trade_deck()
+    deck.run()
+
+    player_1 = Player()
+    player_1.initialize_start()
+
+    UI = UI(player_1)
+
+    while run:
+        current_time = pygame.time.get_ticks()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 run = False
                 exit()
                 break
 
-            if event.key == pygame.K_SPACE:
-                #cards_to_display[0].change_card()
-                deck.replace_card(cards_to_display[1])
-                # print(cards_to_display[1].name)
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    run = False
+                    exit()
+                    break
 
-            if event.key == pygame.K_r:
-                player_1.end_turn_start()
+                if event.key == pygame.K_SPACE:
+                    #cards_to_display[0].change_card()
+                    deck.replace_card(cards_to_display[1])
+                    # print(cards_to_display[1].name)
 
-            if event.key == pygame.K_w:
-                player_1.start_turn()
+                if event.key == pygame.K_r:
+                    player_1.end_turn_start()
 
-            if event.key == pygame.K_s:
-                player_1.end_turn_hand()
+                if event.key == pygame.K_w:
+                    player_1.start_turn()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if pygame.mouse.get_pressed()[0]:
-                is_mouse_pressed = True
+                if event.key == pygame.K_s:
+                    player_1.end_turn_hand()
 
-            if pygame.mouse.get_pressed()[2]:
-                is_mouse_pressed_right = True
+                if event.key == pygame.K_F11:
+                    pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 
-        if event.type == pygame.MOUSEBUTTONUP:
-            is_mouse_pressed = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pressed()[0]:
+                    is_mouse_pressed = True
 
-    mx, my = pygame.mouse.get_pos()
-    mouse_change = pygame.mouse.get_rel()
+                if pygame.mouse.get_pressed()[2]:
+                    is_mouse_pressed_right = True
 
-    screen.fill(BLACK)
+            if event.type == pygame.MOUSEBUTTONUP:
+                is_mouse_pressed = False
 
-    for card in cards_to_display:
-        card.run((mx, my), is_mouse_pressed, enter_preview_cards)
-        if card.enter_preview:
-            enter_preview_cards = True
+        mx, my = pygame.mouse.get_pos()
+        mouse_change = pygame.mouse.get_rel()
 
-        elif card.can_enter_global:
-            enter_preview_cards = False
+        screen.fill(BLACK)
 
-    UI.run()
-    player_1.display_cards_obj(is_mouse_pressed, True)
-    pygame.display.update()
+        for card in cards_to_display:
+            card.run((mx, my), is_mouse_pressed, enter_preview_cards)
+            if card.enter_preview:
+                enter_preview_cards = True
+
+            elif card.can_enter_global:
+                enter_preview_cards = False
+
+        UI.run()
+        player_1.display_cards_obj(is_mouse_pressed, True)
+        pygame.display.update()
