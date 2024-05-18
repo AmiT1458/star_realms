@@ -2,7 +2,6 @@ from star_realms.scripts.cards_data import *
 from star_realms.scripts.card import Card
 from random import choice
 from Button import Button
-from settings import Settings
 from pygame import time
 
 class Manage_Game:
