@@ -56,8 +56,7 @@ class Player:
         self.in_play_obj = []
         i = 1
         for card in self.in_play:
-            obj_card = Card((75 * i * 4 - 48, 575), attributes=StarRealmsCards(card, False).pick_card())
-            cards_to_display.append(obj_card)
+            obj_card = Card((75 * i * 4 - 48, screen.get_height() - 220), attributes=StarRealmsCards(card, False).pick_card())
             self.in_play_obj.append(obj_card)
             i += 1
 

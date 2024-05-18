@@ -4,6 +4,7 @@ from random import choice
 from Button import Button
 from pygame import time
 
+
 class Manage_Game:
     def __init__(self):
         self.deck_pile_dic = None
@@ -21,7 +22,7 @@ class Manage_Game:
     def display_trade(self):
         for i in range(6):
             card_name = choice(self.deck_pile)
-            cards_to_display.append(Card((i * 300, screen.get_height() // 2 - 175), attributes=StarRealmsCards(card_name, False).pick_card()))
+            cards_to_display.append(Card((i * 300, screen.get_height() // 2 - 100), attributes=StarRealmsCards(card_name, False).pick_card()))
             self.deck_pile.remove(card_name)
 
     def replace_card(self, card):
