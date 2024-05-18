@@ -14,8 +14,9 @@ class Button():
         self.text_rect = self.text.get_rect(topleft=(self.x_pos,self.y_pos))
         self.color = 'black'
 
-    def check_for_input(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top , self.rect.bottom):
+    def check_for_input(self, position, mouse_status):
+        if position[0] in range(self.rect.left, self.rect.right) and \
+                position[1] in range(self.rect.top, self.rect.bottom) and mouse_status:
             return True
         return False
 

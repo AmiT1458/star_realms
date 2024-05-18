@@ -88,7 +88,9 @@ CARD_NAME_FONT = pygame.font.Font(GAME_FONT, CARD_NAME_SIZE)
 CARD_abilities_FONT = pygame.font.Font(GAME_FONT, CARD_ABILITIES_SIZE)
 UI_FONT = pygame.font.Font(GAME_FONT, UI_SIZE)
 
+# The trade deck cards
 cards_to_display = []
+
 
 class StarRealmsCards:
     ALL_STAR_REALMS_CARDS = [

@@ -4,6 +4,8 @@ from cards_data import *
 from turn import Round
 from client import send_msg, message
 
+
+# class for the players actions in a turn
 class Player:
     def __init__(self):
         self.health = 50
@@ -14,7 +16,10 @@ class Player:
         self.in_play = None
         self.in_play_obj = []
         self.playing = False
-        self.dict_info = {'health': self.health, 'trade': self.trade, 'combat': self.combat}
+        self.dict_info = {'health': self.health,
+                          'trade': self.trade,
+                          'combat': self.combat,
+                          'trade row': cards_to_display}
 
         self.starRealmsObj = StarRealmsCards
 
@@ -65,7 +70,10 @@ class Player:
             pass
 
     def set_info(self):  # setting the info as a dict to be sent to the other client (player)
-        self.dict_info = {'health': self.health, 'trade': self.trade, 'combat': self.combat}
+        self.dict_info = {'health': self.health,
+                          'trade': self.trade,
+                          'combat': self.combat,
+                          'trade row': cards_to_display}
 
     def send_info(self):  # sending the info to the server
         send_msg(self.dict_info)
@@ -76,9 +84,12 @@ class Player:
     def get_damage(self, damage):
         self.health -= damage
 
+    def buy_card(self):
+        pass
+
     def end_turn_hand(self):  # ending the current turn and preparing to the next one
         self.set_info()
-        self.send_info()
+        # self.send_info()
         self.discard_pile += self.in_play
 
         self.playing = False
@@ -86,7 +97,7 @@ class Player:
         self.trade = 0
 
     def start_turn(self):  # starts a new turn
-        self.read_player_info(message)
+        # self.read_player_info(message)
         self.in_play = self.get_hand()
         self.get_cards_obj()
         self.combat = 0

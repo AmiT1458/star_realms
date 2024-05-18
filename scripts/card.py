@@ -26,8 +26,6 @@ class Card:
         self.display_abilities = False
         self.enter_preview = False
         self.prop_pos_dic = self.get_properties_pos()
-        self.change_x = 0
-        self.change_y = 0
 
         self.starting_time = 0
         self.preview_cooldown = 450
@@ -140,7 +138,6 @@ class Card:
             self.can_enter_global = True
 
     def drag_card(self, position, is_mouse_pressed, enter_preview_cards):
-        self.change_x, self.change_y = 0, 0
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             if is_mouse_pressed and pygame.time.get_ticks() - self.starting_time > self.preview_cooldown:
                 if not enter_preview_cards or self.enter_preview:
@@ -155,9 +152,11 @@ class Card:
         else:
             return False
 
-    def run(self, position, is_mouse_pressed, enter_preview_cards):
+    def run(self, position, is_mouse_pressed, enter_preview_cards, is_mouse_pressed_right=False):
         self.drag_card(position, is_mouse_pressed, enter_preview_cards)
         self.display_card()
+        if self.check_buy_button(is_mouse_pressed_right, position):
+            print(True)
 
     def print_all_attributes(self):
         print(self.attributes)

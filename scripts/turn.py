@@ -2,7 +2,8 @@ from star_realms.scripts.cards_data import *
 from star_realms.scripts.card import Card
 from random import choice
 from Button import Button
-
+from settings import Settings
+from pygame import time
 
 class Manage_Game:
     def __init__(self):
@@ -64,6 +65,11 @@ class UI:
         self.font = UI_FONT
         self.turn_button = Button(screen.get_width() - 300, screen.get_height() - 50, "hello", 250)
         self.player = player
+        self.player_status = ["Start", "End"]
+        self.current_time = time.get_ticks()
+        self.countdown = 250
+        self.timer_point = 0
+        self.turn_button.change_text_input(self.player_status[int(self.player.playing)])
 
     def draw_stats(self):
         if self.player.playing:
@@ -86,16 +92,17 @@ class UI:
             if self.player.trade >= card.cost:
                 card.make_yellow()
 
-    def end_start_button(self):
-        if self.player.playing:
-            self.turn_button.change_text_input("End")
+    def end_start_button(self, position, is_mouse_pressed):
+        if self.turn_button.check_for_input(position, is_mouse_pressed) and self.current_time - self.timer_point >= self.countdown:
+            self.timer_point = time.get_ticks()
+            self.player.playing = not self.player.playing
+            self.turn_button.change_text_input(self.player_status[int(self.player.playing)])
 
-        if not self.player.playing:
-            self.turn_button.change_text_input("Start")
-
+        self.turn_button.change_color(position)
         self.turn_button.update()
 
-    def run(self):
-        self.end_start_button()
+    def run(self, position, is_mouse_pressed):
+        self.end_start_button(position, is_mouse_pressed)
         self.draw_stats()
         self.draw_buy_outline()
+        self.current_time = time.get_ticks()

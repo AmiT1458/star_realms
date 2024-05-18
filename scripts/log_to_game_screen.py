@@ -1,7 +1,7 @@
 import pygame
 #import client
 from cards_data import UI_FONT, screen
-import main_screen
+from main_screen import Game
 from Input_box import InputBox
 import client
 
@@ -28,6 +28,8 @@ def main():
     running = True
     events_handles = [text_box, name_text]
 
+    game: Game = Game()
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -50,7 +52,7 @@ def main():
         if name_text.pressed_enter:
             if client.send_name(name_text.text_input):
                 client.start_receive()
-                main_screen.main()
+                game.main()
             name_text.pressed_enter = False
 
         screen.fill('black')
