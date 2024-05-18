@@ -96,6 +96,7 @@ class UI:
             self.timer_point = time.get_ticks()
             self.player.playing = not self.player.playing
             self.turn_button.change_text_input(self.player_status[int(self.player.playing)])
+            self.player.pursue_turn(self.player.playing)
 
         self.turn_button.change_color(position)
         self.turn_button.update()
@@ -105,3 +106,4 @@ class UI:
         self.draw_stats()
         self.draw_buy_outline()
         self.current_time = time.get_ticks()
+        self.turn_button.update_rect_position(screen.get_width() - 300, screen.get_height() - 50)

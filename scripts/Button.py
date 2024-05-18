@@ -2,7 +2,7 @@ import pygame
 from cards_data import screen, UI_FONT, UI_SIZE, WHITE
 
 
-class Button():
+class Button:
     def __init__(self, x_pos,y_pos,text_input, size):
         self.x_pos = x_pos
         self.y_pos = y_pos
@@ -32,6 +32,11 @@ class Button():
     def change_text_input(self, text_input):
         self.text_input = text_input
         self.text = self.font.render(self.text_input, True, self.color)
+
+    def update_rect_position(self, x_pos, y_pos):
+        self.rect.x = x_pos
+        self.rect.y = y_pos
+        self.text_rect = self.text.get_rect(topleft=(x_pos, y_pos))
 
     def update(self):
         pygame.draw.rect(screen, WHITE, self.rect)

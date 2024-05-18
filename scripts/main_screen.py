@@ -3,7 +3,6 @@ import pygame
 from player import Player
 from turn import *
 from client import disconnect
-from settings import Settings
 
 
 class Game:
@@ -28,6 +27,8 @@ class Game:
         self.player_1.initialize_start()
 
         self.UI = UI(self.player_1)
+
+        self.screen_settings = [pygame.FULLSCREEN, pygame.RESIZABLE]
 
     def run_display_cards(self):
         for card in cards_to_display:
@@ -61,15 +62,6 @@ class Game:
                         self.deck.replace_card(cards_to_display[1])
                         # print(cards_to_display[1].name)
 
-                    if event.key == pygame.K_r:
-                        self.player_1.end_turn_start()
-
-                    if event.key == pygame.K_w:
-                        self.player_1.start_turn()
-
-                    if event.key == pygame.K_s:
-                        self.player_1.end_turn_hand()
-
                     if event.key == pygame.K_F11:
                         pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 
@@ -89,9 +81,6 @@ class Game:
 
             self.run_display_cards()
             self.UI.run(self.position, self.is_mouse_pressed)
-
-            self.settings = Settings(self.run, self.is_mouse_pressed, self.is_mouse_pressed_right,
-                                 self.position, self.enter_preview_cards, self.current_time)
 
             self.player_1.display_cards_obj(self.is_mouse_pressed, True)
             pygame.display.update()

@@ -105,6 +105,13 @@ class Player:
         self.playing = True
         Round().player_turn(self)
 
+    def pursue_turn(self, status):
+        if not status:
+            self.end_turn_hand()
+
+        else:
+            self.start_turn()
+
     def end_turn_start(self):  # a method for unit test Player
         self.start_turn()
         self.end_turn_hand()
