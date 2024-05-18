@@ -10,6 +10,9 @@ class Manage_Game:
         self.deck_pile_dic = None
         self.deck_pile = None
         self.in_play = []
+        self.current_time = pygame.time.get_ticks()
+        self.timer_point = 0
+        self.buy_cooldown = 700
 
     def initialize_trade_deck(self):
         self.deck_pile_dic = \
@@ -20,9 +23,9 @@ class Manage_Game:
         self.deck_pile = [card['name'] for card in self.deck_pile_dic for _ in range(card['quantity'])]
 
     def display_trade(self):
-        for i in range(6):
+        for i in range(5):
             card_name = choice(self.deck_pile)
-            cards_to_display.append(Card((i * 300, screen.get_height() // 2 - 100), attributes=StarRealmsCards(card_name, False).pick_card()))
+            cards_to_display.append(Card((i * 300 + 50, screen.get_height() // 2 - 100), attributes=StarRealmsCards(card_name, False).pick_card()))
             self.deck_pile.remove(card_name)
 
     def replace_card(self, card):
@@ -33,9 +36,18 @@ class Manage_Game:
             pass
         card.change_card(choice(self.deck_pile))
 
+    def buy_card(self, player):
+        if player.playing:
+            for card in cards_to_display:
+                if card.check_buy_button() and player.trade >= card.cost and self.current_time - self.timer_point >= self.buy_cooldown:
+                    self.timer_point = pygame.time.get_ticks()
+                    player.buy_card(card)
+                    self.replace_card(card)
+
+        self.current_time = pygame.time.get_ticks()
+
     def run(self):
         self.display_trade()
-
 
 # class for changing the players' stats according to their turns
 # TODO: make this class the communication tool for the players

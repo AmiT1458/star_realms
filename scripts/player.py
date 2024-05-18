@@ -72,7 +72,8 @@ class Player:
         self.dict_info = {'health': self.health,
                           'trade': self.trade,
                           'combat': self.combat,
-                          'trade row': cards_to_display}
+                          'trade row': cards_to_display
+                          }
 
     def send_info(self):  # sending the info to the server
         send_msg(self.dict_info)
@@ -83,8 +84,9 @@ class Player:
     def get_damage(self, damage):
         self.health -= damage
 
-    def buy_card(self):
-        pass
+    def buy_card(self, card):
+        self.trade -= card.cost
+        self.discard_pile.append(card.name)
 
     def end_turn_hand(self):  # ending the current turn and preparing to the next one
         self.set_info()

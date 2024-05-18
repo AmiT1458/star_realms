@@ -242,6 +242,9 @@ class StarRealmsCards:
             COST: 3,
             SET: STAR_REALMS,
             QUANTITY: 2,
+            ABILITIES: {
+
+            },
             SCRAP_ABILITIES: {
                 COMBAT: 5
             }

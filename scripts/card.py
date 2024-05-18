@@ -27,6 +27,7 @@ class Card:
         self.enter_preview = False
         self.prop_pos_dic = self.get_properties_pos()
 
+        self.current_time = pygame.time.get_ticks()
         self.starting_time = 0
         self.preview_cooldown = 450
         self.can_enter_global = True
@@ -35,6 +36,11 @@ class Card:
         self.cost = self.attributes['cost']
         self.faction = self.attributes['faction']
         self.faction_color = self.faction_color_picker()
+
+
+        self.position_mouse = (0,0)
+        self.is_mouse_pressed = False
+        self.is_mouse_pressed_right = False
 
     def __len__(self):
         return sum(map(len, self.name.split()))
@@ -139,24 +145,28 @@ class Card:
 
     def drag_card(self, position, is_mouse_pressed, enter_preview_cards):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            if is_mouse_pressed and pygame.time.get_ticks() - self.starting_time > self.preview_cooldown:
+            if is_mouse_pressed and self.current_time - self.starting_time > self.preview_cooldown:
                 if not enter_preview_cards or self.enter_preview:
                     self.starting_time = pygame.time.get_ticks()
                     self.preview_card(is_mouse_pressed)
 
-    def check_buy_button(self, is_mouse_pressed_right, position) -> bool:
-        if position[0] in range(self.rect.left, self.rect.right) and \
-                position[1] in range(self.rect.top, self.rect.bottom) and is_mouse_pressed_right:
+    def check_buy_button(self) -> bool:
+        if self.position_mouse[0] in range(self.rect.left, self.rect.right) and \
+                self.position_mouse[1] in range(self.rect.top, self.rect.bottom) and self.is_mouse_pressed_right:
             return True
 
         else:
             return False
 
     def run(self, position, is_mouse_pressed, enter_preview_cards, is_mouse_pressed_right=False):
+        self.is_mouse_pressed_right = is_mouse_pressed_right
+        self.is_mouse_pressed = is_mouse_pressed
+        self.position_mouse = position
+
         self.drag_card(position, is_mouse_pressed, enter_preview_cards)
         self.display_card()
-        if self.check_buy_button(is_mouse_pressed_right, position):
-            print(True)
+        self.check_buy_button()
+        self.current_time = pygame.time.get_ticks()
 
     def print_all_attributes(self):
         print(self.attributes)
