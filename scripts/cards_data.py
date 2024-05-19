@@ -1,6 +1,7 @@
 import pygame
 from random import randint
 import os
+from print_statements import Print
 
 # Fields
 NAME = 'name'
@@ -66,7 +67,7 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 800
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Star realms")
-trade_row_pos_y = screen.get_height() // 2 - 100
+trade_row_pos_y = screen.get_height() // 2 + 100
 
 # colors
 WHITE = (255, 255, 255)
@@ -96,6 +97,10 @@ BASE_OUTPOST_FONT = pygame.font.Font(GAME_FONT, BASE_OUTPOST_SIZE)
 # The trade deck cards
 cards_to_display = []
 any_cards_previewed = False
+
+# Debug helpers
+debug = lambda message: Print().debug_print(message)
+server = lambda message: Print().debug_server_print(message)
 
 
 class StarRealmsCards:

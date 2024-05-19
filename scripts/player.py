@@ -62,9 +62,9 @@ class Player:
             self.in_play_obj.append(obj_card)
 
             # checking if the card is either a base or an outpost
-            if card.type == 'base':
+            if obj_card.type == 'base':
                 self.bases_in_play.append(card)
-            elif card.type == 'outpost':
+            elif obj_card.type == 'outpost':
                 self.outposts_in_play.append(card)
 
             i += 1

@@ -1,6 +1,7 @@
 import socket
 import pickle
 import threading
+from cards_data import server
 
 PORT = 65432  # Same port as server
 
@@ -17,7 +18,7 @@ def check_allow_name(name):
             name_allowed = True
         else:
             name_allowed = False
-            print("\nplease enter a legal name\n")
+            server("\nplease enter a legal name\n")
 
     return name_allowed
 
@@ -25,15 +26,16 @@ def check_allow_name(name):
 def send_name(name) -> bool:
     if check_allow_name(name):
         client_socket.sendall(name.encode())  # Send name to server on connection
-        print('Name entered!')
+        server('Name entered!')
         return True
 
     else:
-        print('name was not entered.. try a different one')
+        server('name was not entered.. try a different one')
         return False
 
-def send_msg(msg):
-    data = pickle.dumps(msg)
+
+def send_msg(msg) -> bool:
+    data = pickle.dumps(f' {msg}')
     try:
         client_socket.sendall(data)  # Send pickled data
         return True
@@ -49,7 +51,7 @@ def receive_msg():
             break
         # Unpickle received data
         message = pickle.loads(data)
-        print(message)
+        server(message)
 
 
 def connect(host):
@@ -57,10 +59,10 @@ def connect(host):
     HOST = host
     try:
         client_socket.connect((HOST, PORT))
-        print(f"Connected to server {HOST}:{PORT}")
+        server(f"Connected to server {HOST}:{PORT}")
         is_connection = True
     except ConnectionError:
-        print("Connection failed.")
+        server("Connection failed.")
 
 
 def start_receive():
@@ -74,13 +76,13 @@ def disconnect():
     try:
         thread_alive = False
         client_socket.close()
-        print("disconected")
+        server("disconnected")
     except:
         pass
 
 
 if __name__ == "__main__":
-    connect(input("ip adress: "))
+    connect(input("ip address: "))
     send_name(input("name: "))
     start_receive()
     while True:

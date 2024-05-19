@@ -13,7 +13,7 @@ class Manage_Game:
         self.in_play = []
         self.current_time = pygame.time.get_ticks()
         self.timer_point = 0
-        self.buy_cooldown = 700
+        self.buy_cooldown = 500
 
     def initialize_trade_deck(self):
         self.deck_pile_dic = \
@@ -37,7 +37,6 @@ class Manage_Game:
     def replace_card(self, card):
         try:
             self.deck_pile.remove(card.name)
-            print(len(self.deck_pile))
         except Exception:
             pass
         card.change_card(choice(self.deck_pile))
