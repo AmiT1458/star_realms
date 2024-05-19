@@ -15,6 +15,8 @@ class Player:
         self.discard_pile = None
         self.in_play = None
         self.in_play_obj = []
+        self.bases_in_play = []
+        self.outposts_in_play = []
         self.playing = False
         self.dict_info = {'health': self.health,
                           'trade': self.trade,
@@ -58,15 +60,19 @@ class Player:
         for card in self.in_play:
             obj_card = Card((75 * i * 4 - 48, screen.get_height() - 220), attributes=StarRealmsCards(card, False).pick_card())
             self.in_play_obj.append(obj_card)
+
+            # checking if the card is either a base or an outpost
+            if card.type == 'base':
+                self.bases_in_play.append(card)
+            elif card.type == 'outpost':
+                self.outposts_in_play.append(card)
+
             i += 1
 
     def display_cards_obj(self, is_mouse_pressed, enter_preview_cards):
         if self.playing:
             for card in self.in_play_obj:
                 card.run((0, 0), is_mouse_pressed, enter_preview_cards)
-
-        if not self.playing:
-            pass
 
     def set_info(self):  # setting the info as a dict to be sent to the other client (player)
         self.dict_info = {'health': self.health,
