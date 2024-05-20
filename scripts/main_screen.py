@@ -85,7 +85,6 @@ class Game:
             self.deck.buy_card(self.player_1)
             self.player_1.display_cards_obj(self.is_mouse_pressed, True)
 
-
             pygame.display.update()
 
 

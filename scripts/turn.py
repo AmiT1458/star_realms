@@ -54,28 +54,6 @@ class Manage_Game:
     def run(self):
         self.display_trade()
 
-# class for changing the players' stats according to their turns
-# TODO: make this class the communication tool for the players
-class Round:
-    def __init__(self):
-        pass
-
-    def player_turn(self, player):
-        stats_dict = {'combat': 0, 'trade': 0, 'authority': 0, 'draw': 0}
-
-        for stat in stats_dict.keys():
-            for card in player.in_play_obj:
-                if card.attributes.get(stat) is not None:
-                    stats_dict[stat] += card.attributes[stat]
-
-                if card.name != 'Scout' and card.name != 'Viper':
-                    if card.attributes['abilities'].get(stat) is not None:
-                        stats_dict[stat] += card.attributes['abilities'][stat]
-
-        player.trade += stats_dict['trade']
-        player.combat += stats_dict['combat']
-        player.health += stats_dict['authority']
-
 
 class UI:
     def __init__(self, player):

@@ -47,7 +47,7 @@ class Card:
         self.preview_cooldown = 450
         self.can_enter_global = True
 
-        self.position_mouse = (0,0)
+        self.position_mouse = (0, 0)
         self.is_mouse_pressed = False
         self.is_mouse_pressed_right = False
 

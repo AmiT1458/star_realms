@@ -1,7 +1,6 @@
 from card import Card
 from random import shuffle
 from cards_data import *
-from turn import Round
 from client import send_msg, message
 
 
@@ -22,6 +21,11 @@ class Player:
                           'trade': self.trade,
                           'combat': self.combat,
                           'trade row': cards_to_display}
+
+        self.faction_links = {'Blob': False,
+                              'Machine Cult': False,
+                              'Star Empire': False,
+                              'Trade Federation': False}
 
         self.starRealmsObj = StarRealmsCards
 
@@ -56,23 +60,23 @@ class Player:
     # displaying the player's hand at the start of the turn
     def get_cards_obj(self):
         self.in_play_obj = []
-        i = 1
-        for card in self.in_play:
-            obj_card = Card((75 * i * 4 - 48, screen.get_height() - 220), attributes=StarRealmsCards(card, False).pick_card())
+        for card in enumerate(self.in_play):
+            obj_card = Card((75 * (card[0] + 1) * 4 - 280, screen.get_height() - 220), attributes=StarRealmsCards(card[1], False).pick_card())
             self.in_play_obj.append(obj_card)
 
             # checking if the card is either a base or an outpost
             if obj_card.type == 'base':
-                self.bases_in_play.append(card)
+                self.bases_in_play.append(card[1])
             elif obj_card.type == 'outpost':
-                self.outposts_in_play.append(card)
-
-            i += 1
+                self.outposts_in_play.append(card[1])
 
     def display_cards_obj(self, is_mouse_pressed, enter_preview_cards):
         if self.playing:
             for card in self.in_play_obj:
                 card.run((0, 0), is_mouse_pressed, enter_preview_cards)
+
+    def display_bases_outposts(self):
+        pass
 
     def set_info(self):  # setting the info as a dict to be sent to the other client (player)
         self.dict_info = {'health': self.health,
@@ -94,6 +98,28 @@ class Player:
         self.trade -= card.cost
         self.discard_pile.append(card.name)
 
+    def check_faction_links(self):
+        for card in self.in_play_obj:
+            if card.faction != 'Unaligned':
+                if any(faction for faction in list(self.faction_links.keys())):
+                    self.faction_links[card.faction] = True
+
+    def player_turn(self):
+        stats_dict = {'combat': 0, 'trade': 0, 'authority': 0, 'draw': 0}
+
+        for stat in stats_dict.keys():
+            for card in self.in_play_obj:
+                if card.attributes.get(stat) is not None:
+                    stats_dict[stat] += card.attributes[stat]
+
+                if card.name != 'Scout' and card.name != 'Viper':
+                    if card.attributes['abilities'].get(stat) is not None:
+                        stats_dict[stat] += card.attributes['abilities'][stat]
+
+        self.trade += stats_dict['trade']
+        self.combat += stats_dict['combat']
+        self.health += stats_dict['authority']
+
     def end_turn_hand(self):  # ending the current turn and preparing to the next one
         self.set_info()
         # self.send_info()
@@ -102,6 +128,10 @@ class Player:
         self.playing = False
         self.combat = 0
         self.trade = 0
+        self.faction_links = {'Blob': False,
+                              'Machine Cult': False,
+                              'Star Empire': False,
+                              'Trade Federation': False}
 
     def start_turn(self):  # starts a new turn
         # self.read_player_info(message)
@@ -110,7 +140,7 @@ class Player:
         self.combat = 0
         self.trade = 0
         self.playing = True
-        Round().player_turn(self)
+        self.player_turn()
 
     def pursue_turn(self, status):
         if not status:
@@ -118,6 +148,7 @@ class Player:
 
         else:
             self.start_turn()
+            self.check_faction_links()
 
     def end_turn_start(self):  # a method for unit test Player
         self.start_turn()
