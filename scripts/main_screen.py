@@ -83,7 +83,7 @@ class Game:
             self.run_display_cards()
             self.UI.run(self.position, self.is_mouse_pressed)
             self.deck.buy_card(self.player_1)
-            self.player_1.display_cards_obj(self.is_mouse_pressed, True)
+            self.player_1.run(self.is_mouse_pressed, True)
 
             pygame.display.update()
 

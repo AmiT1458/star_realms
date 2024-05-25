@@ -14,7 +14,7 @@ message = ''
 def check_allow_name(name):
     name_allowed = False
     while not name_allowed:
-        if any((c in allowed_letters) for c in name):
+        if any(c in allowed_letters for c in name):
             name_allowed = True
         else:
             name_allowed = False

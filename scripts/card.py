@@ -20,6 +20,7 @@ class Card:
         self.faction = self.attributes['faction']
         self.faction_color = self.faction_color_picker()
         self.type = self.attributes['type']
+        self.added_faction_abilities = False
 
         self.card_vector = pygame.Vector2((starting_pos[0], starting_pos[1]))
         self.rect = pygame.rect.Rect((self.card_vector[0], self.card_vector[1]),
