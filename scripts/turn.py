@@ -1,5 +1,5 @@
-from star_realms.scripts.cards_data import *
-from star_realms.scripts.card import Card
+from star_realms_game.scripts.cards_data import *
+from star_realms_game.scripts.card import Card
 from random import choice
 from Button import Button
 from pygame import time
@@ -58,7 +58,7 @@ class Manage_Game:
 class UI:
     def __init__(self, player):
         self.font = UI_FONT
-        self.turn_button = Button(screen.get_width() - 300, screen.get_height() - 50, "hello", 250)
+        self.turn_button = Button(screen.get_width() - 300, screen.get_height() - 50, "hello", 251)
         self.player = player
         self.player_status = ["Start", "End"]
         self.current_time = time.get_ticks()

@@ -5,6 +5,11 @@ from turn import *
 from client import disconnect
 
 
+def exit_game():
+    disconnect()
+    exit()
+
+
 class Game:
     def __init__(self):
         self.current_time = pygame.time.get_ticks()
@@ -46,16 +51,12 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.run = False
-                    disconnect()
-                    exit()
-                    break
+                    exit_game()
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         self.run = False
-                        disconnect()
-                        exit()
-                        break
+                        exit_game()
 
                     if event.key == pygame.K_SPACE:
                         #cards_to_display[0].change_card()
